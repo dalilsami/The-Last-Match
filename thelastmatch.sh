@@ -173,6 +173,7 @@ then
 	create_game $1
 	turns $1
     else
+	echo -e "Vous devez choisir le nombre de lignes entre 1 et 10 "
 	exit 0
     fi
 else
