@@ -175,7 +175,7 @@ turns_hh () {
 	if [ $continue -eq 0 ]
 	then
 	    echo "Le joueur 1 a gagné, bravo !"
-	    exit 1
+	    quit $1
 	fi
 	echo "Au tour du joueur 1..."
 	player $1
@@ -184,12 +184,27 @@ turns_hh () {
 	if [ $continue -eq 0 ]
 	then
 	    echo "Le joueur 2 a gagné, bravo !"
-	    exit 2
+	    quit $1
 	fi
 	echo "Au tour du joueur 2..."
 	player $1
     done
 }
+
+quit () {
+    read -p 'Voulez-vous recommencer ? (oui ou non) ' again
+    if [ $again = 'oui' || $again = 'o' ]
+    then
+	create_game $1
+	turns_hh $1
+    elif [ $again = 'non' | $again = 'n' ]
+    then
+	exit 0
+    else
+	quit $1
+    fi
+}
+	
 
 if [ "$(echo "$1" | egrep '^[0-9]+$')" ]
 then
