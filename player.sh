@@ -23,7 +23,7 @@ player () {
 		then
 		    echo "Cette ligne est vide"
 		else
-		    echo "Le nombre d'allumettes doit Ãªtre entre 1 et $all_in"
+		    echo "Le nombre d'allumettes doit etre entre 1 et $all_in"
 		fi
 		player $1
 	    fi
@@ -35,4 +35,4 @@ player () {
 	echo "Il faut que des nombres"
 	player $1
     fi
-    }
+}
