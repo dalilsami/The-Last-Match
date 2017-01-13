@@ -1,4 +1,7 @@
 #!/bin/bash
+source turn.sh
+source ia.sh
+source player.sh
 
 declare -A game_grid
 continue=1
@@ -85,87 +88,7 @@ del_sticks () {
     done
 }
 
-player () {
-    echo "Votre tour : "
-    read -p 'Ligne : ' ligne
-    read -p 'Allumettes : ' all
-    if [ "$(echo "$ligne" | egrep '^[0-9]+$')" ] && [ "$(echo "$all" | egrep '^[0-9]+$')" ]
-    then
-	if [ "$(echo "$ligne" | egrep '^[1-9][0]?$')" ] && [ "$ligne" -ge 1 ] && [ "$ligne" -le  $1 ]
-	then
-	    if [ "$(echo "$all" | egrep '^[1-9][0-9]?$')" ] && [ "$all" -ge 1 ] && [ "$all" -le  $((2 * $ligne - 1)) ]
-	    then
-		count_sticks $1 $ligne
-		if [ $all -le $all_in  ]
-		then		  
-		    del_sticks $1 $ligne $all
-		    echo "Vous retirez $all allumette(s) sur la ligne $ligne"
-		else
-		    echo "Le nombre d'allumettes est trop grand"
-		    player $1
-		fi
-	    else
-		count_sticks $1 $ligne
-		if [ $all_in -eq 0 ]
-		then
-		    echo "Cette ligne est vide"
-		else
-		    echo "Le nombre d'allumettes doit être entre 1 et $all_in"
-		fi
-		player $1
-	    fi
-	else
-	    echo "Il faut que la ligne soit entre 1 et $1 "
-	    player $1
-	fi
-    else
-	echo "Il faut que des nombres"
-	player $1
-    fi
-}
 
-ia () {
-    ligne=$(( (RANDOM % $1) + 1 ))
-
-    count_sticks $1 $ligne
-    if [ $all_in -ne 0 ]
-    then
-	all=$(( (RANDOM % $((2 * $ligne - 1))) + 1 ))
-	if [ $all -le $all_in ]
-	then
-	    del_sticks $1 $ligne $all
-	    echo "L'IA retire $all allumette(s) sur la ligne $ligne"
-	else
-	    ia $1
-	fi
-    else
-	ia $1
-    fi
-}
-
-turns () {
-    while [ $continue -eq 1 ]
-    do
-	display_game $1
-	echo ""
-	if [ $continue -eq 0 ]
-	then
-	    echo "Zut ! J'ai perdu..."
-	    exit 1
-	fi
-	player $1
-	display_game $1
-	echo ""
-	if [ $continue -eq 0 ]
-	then
-	    echo "Maintenant vous pouvez voir mon réel pouvoir ! Looser"
-	    exit 2
-	fi
-	echo "Tour de l'IA..."
-	sleep 1
-	ia $1
-    done
-}
 if [ "$(echo "$1" | egrep '^[0-9]+$')" ]
 then
     if [ "$(echo "$1" | egrep '^[1-9][0]?$')" ] && [ "$1" -gt 1 ] && [ "$1" -le  10 ]
@@ -178,4 +101,4 @@ then
     fi
 else
     exit 0
-    fi
+        fi
