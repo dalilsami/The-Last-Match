@@ -166,6 +166,15 @@ turns () {
 	ia $1
     done
 }
-
-create_game $1
-turns $1
+if [ "$(echo "$1" | egrep '^[0-9]+$')" ]
+then
+    if [ "$(echo "$1" | egrep '^[1-9][0]?$')" ] && [ "$1" -gt 1 ] && [ "$1" -le  10 ]
+    then
+	create_game $1
+	turns $1
+    else
+	exit 0
+    fi
+else
+    exit 0
+    fi
